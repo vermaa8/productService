@@ -21,6 +21,22 @@ public class FakeStoreProductResponseDTO {
                 productResponseDTO.getDescription(),
                 productResponseDTO.getPrice(),
                 productResponseDTO.getImage(),
-                new Category(productResponseDTO.getCategory()));
+                new Category(productResponseDTO.getCategory(), null));
+    }
+
+    public Product toProduct() {
+        Product product = new Product();
+        product.setId(this.id);
+        product.setTitle(this.title);
+        product.setDescription(this.description);
+        product.setImageUrl(this.image);
+        product.setPrice(Double.valueOf(this.price));
+
+        Category category1 = new Category();
+        category1.setName(this.category);
+
+        product.setCategory(category1);
+
+        return product;
     }
 }
