@@ -1,6 +1,10 @@
 package com.scaler.capstone.productservice.ProductService.controller;
 
 import com.scaler.capstone.productservice.ProductService.dtos.ProductResponseDTO;
+import com.scaler.capstone.productservice.ProductService.models.Product;
+import com.scaler.capstone.productservice.ProductService.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,16 +14,17 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    @GetMapping("product/{id}")
-    public ProductResponseDTO getProductById(@PathVariable("id") Long id) {
-        ProductResponseDTO dummy = new ProductResponseDTO();
-        dummy.setId(1L);
-        dummy.setTitle("abc");
-        dummy.setPrice(100D);
-        dummy.setDescription("adj;lksadjf;lkjdnsf");
-        dummy.setImageUrl("asldkj;lsdkjf");
+    ProductService productService;
 
-        return dummy;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("product/{id}")
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable("id") Long id) {
+        Product product = productService.getProductById(id);
+
+        return new ResponseEntity<>(ProductResponseDTO.from(product), HttpStatus.valueOf(202));
     }
 
     @GetMapping("product")
