@@ -5,6 +5,7 @@ import com.scaler.capstone.productservice.ProductService.dtos.ProductResponseDTO
 import com.scaler.capstone.productservice.ProductService.exceptions.ProductNotFoundException;
 import com.scaler.capstone.productservice.ProductService.models.Product;
 import com.scaler.capstone.productservice.ProductService.service.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,10 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    ProductService productService;
 
-    public ProductController(ProductService productService) {
+    private ProductService productService;
+
+    public ProductController(@Qualifier("productDBService") ProductService productService) {
         this.productService = productService;
     }
 
