@@ -1,5 +1,7 @@
 package com.scaler.capstone.productservice.ProductService.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -15,8 +17,9 @@ public class Product extends BaseModel {
     private String description;
     private Double price;
     private String imageUrl;
-    @ManyToOne(cascade = CascadeType.ALL) // or CascadeType.ALL
-    @JoinColumn(name = "category_id")
+    @ManyToOne // or CascadeType.ALL
+   // @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     public Product(Long id,String title, String description, Double price, String imageUrl, Category category) {

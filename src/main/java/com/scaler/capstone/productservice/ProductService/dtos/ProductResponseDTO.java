@@ -17,7 +17,7 @@ public class ProductResponseDTO {
     private String description;
     private Double price;
     private String imageUrl;
-    private Category category;
+    private CategoryDto category;
 
     public static ProductResponseDTO from(Product product) {
         return new ProductResponseDTO(product.getId(),
@@ -25,6 +25,7 @@ public class ProductResponseDTO {
                 product.getDescription(),
                 product.getPrice(),
                 product.getImageUrl(),
-                product.getCategory());
+                new CategoryDto(product.getCategory().getName(), product.getCategory().getDescription()));
     }
+
 }

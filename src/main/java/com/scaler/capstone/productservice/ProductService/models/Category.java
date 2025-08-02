@@ -1,5 +1,6 @@
 package com.scaler.capstone.productservice.ProductService.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Category extends BaseModel {
     private List<Product> featuredProducts;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List <Product> products;
 
     public Category(String name, String description) {

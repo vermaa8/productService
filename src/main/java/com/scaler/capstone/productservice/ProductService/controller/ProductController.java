@@ -1,5 +1,6 @@
 package com.scaler.capstone.productservice.ProductService.controller;
 
+import com.scaler.capstone.productservice.ProductService.dtos.CategoryDto;
 import com.scaler.capstone.productservice.ProductService.dtos.ProductRequestDTO;
 import com.scaler.capstone.productservice.ProductService.dtos.ProductResponseDTO;
 import com.scaler.capstone.productservice.ProductService.exceptions.ProductNotFoundException;
@@ -38,7 +39,7 @@ public class ProductController {
                     product.getTitle(), product.getDescription(),
                     product.getPrice(),
                     product.getImageUrl(),
-                    product.getCategory()));
+                    new CategoryDto(product.getCategory().getName(), product.getCategory().getDescription())));
 
         }
         return new ResponseEntity<>(productResponseDTOS, HttpStatus.valueOf(201));
@@ -56,7 +57,7 @@ public class ProductController {
                 product.getDescription(),
                 product.getPrice(),
                 product.getImageUrl(),
-                product.getCategory());
+                new CategoryDto(product.getCategory().getName(), product.getCategory().getDescription()));
         return new ResponseEntity<>(productResponseDTO, HttpStatus.valueOf(201));
     }
 

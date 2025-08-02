@@ -23,12 +23,12 @@ public class ProductDBService implements ProductService{
 
     @Override
     public Product getProductById(Long id) throws ProductNotFoundException {
-        return null;
+        return productRepository.findById(id).get();
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
