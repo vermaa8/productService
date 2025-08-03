@@ -62,10 +62,18 @@ public class ProductController {
     }
 
 
-    public ResponseEntity<Product> partialUpdate(Long id, Product product) throws ProductNotFoundException {
+    @PatchMapping("product")
+    public ResponseEntity<ProductResponseDTO> partialUpdate(Long id, Product product) throws ProductNotFoundException {
         Product product1=  productService.partialUpdate(id, product);
-        return null;
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO(product1.getId(),
+                product1.getTitle(),
+                product1.getDescription(),
+                product1.getPrice(),
+                product1.getImageUrl(),
+                new CategoryDto(product1.getCategory().getName(), product1.getCategory().getDescription()));
+        return new ResponseEntity<>(productResponseDTO, HttpStatus.valueOf(201));
     }
+
 
     public void deleteProduct() {}
 

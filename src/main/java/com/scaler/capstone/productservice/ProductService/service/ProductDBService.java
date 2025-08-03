@@ -39,7 +39,27 @@ public class ProductDBService implements ProductService{
 
     @Override
     public Product partialUpdate(Long id, Product product) throws ProductNotFoundException {
-        return null;
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
+            throw new ProductNotFoundException("{roduct that y6ou want to update is not found");
+        }
+        Product product1ToUpdate = productOptional.get();
+        if (product.getTitle() != null) {
+            product1ToUpdate.setTitle(product.getTitle());
+        }
+        if (product.getDescription() != null) {
+            product1ToUpdate.setDescription(product.getDescription());
+        }
+        if (product.getPrice() != null) {
+            product1ToUpdate.setPrice(product.getPrice());
+        }
+        if (product.getImageUrl() != null) {
+            product1ToUpdate.setImageUrl(product.getImageUrl());
+        }
+        if (product.getCategory() != null) {
+            product1ToUpdate.setCategory(getCategoryFromDB(product.getCategory().getName()));
+        }
+        return productRepository.save(product1ToUpdate);
     }
     private Category getCategoryFromDB(String categoryName) {
         Optional<Category> optionalcategory = categotyRepository.findByName(categoryName);

@@ -1,9 +1,6 @@
 package com.scaler.capstone.productservice.ProductService.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +13,19 @@ public class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
     private boolean isDeleted;
+    @PrePersist
+    protected  void onCreate() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        this.createdAt = localDateTime;
+        this.updatedAt = localDateTime;
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
