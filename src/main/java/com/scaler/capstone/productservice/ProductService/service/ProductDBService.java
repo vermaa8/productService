@@ -23,7 +23,11 @@ public class ProductDBService implements ProductService{
 
     @Override
     public Product getProductById(Long id) throws ProductNotFoundException {
-        return productRepository.findById(id).get();
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
+            throw new ProductNotFoundException("Product with id " + id + " not found");
+        }
+        return productOptional.get();
     }
 
     @Override
@@ -41,7 +45,7 @@ public class ProductDBService implements ProductService{
     public Product partialUpdate(Long id, Product product) throws ProductNotFoundException {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
-            throw new ProductNotFoundException("{roduct that y6ou want to update is not found");
+            throw new ProductNotFoundException("Product that you want to update is not found");
         }
         Product product1ToUpdate = productOptional.get();
         if (product.getTitle() != null) {
@@ -58,6 +62,31 @@ public class ProductDBService implements ProductService{
         }
         if (product.getCategory() != null) {
             product1ToUpdate.setCategory(getCategoryFromDB(product.getCategory().getName()));
+        }
+        return productRepository.save(product1ToUpdate);
+    }
+    
+    @Override
+    public Product partialUpdate(Long id, Product product, String categoryName) throws ProductNotFoundException {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
+            throw new ProductNotFoundException("Product that you want to update is not found");
+        }
+        Product product1ToUpdate = productOptional.get();
+        if (product.getTitle() != null) {
+            product1ToUpdate.setTitle(product.getTitle());
+        }
+        if (product.getDescription() != null) {
+            product1ToUpdate.setDescription(product.getDescription());
+        }
+        if (product.getPrice() != null) {
+            product1ToUpdate.setPrice(product.getPrice());
+        }
+        if (product.getImageUrl() != null) {
+            product1ToUpdate.setImageUrl(product.getImageUrl());
+        }
+        if (categoryName != null) {
+            product1ToUpdate.setCategory(getCategoryFromDB(categoryName));
         }
         return productRepository.save(product1ToUpdate);
     }

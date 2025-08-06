@@ -14,4 +14,6 @@ public interface ProductService {
                                  String imageUrl, String categoryName);
 
     public Product partialUpdate(Long id, Product product) throws ProductNotFoundException;
+    
+    public Product partialUpdate(Long id, Product product, String categoryName) throws ProductNotFoundException;
 }

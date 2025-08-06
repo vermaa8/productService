@@ -3,6 +3,7 @@ package com.scaler.capstone.productservice.ProductService.controller;
 import com.scaler.capstone.productservice.ProductService.dtos.CategoryDto;
 import com.scaler.capstone.productservice.ProductService.dtos.ProductRequestDTO;
 import com.scaler.capstone.productservice.ProductService.dtos.ProductResponseDTO;
+import com.scaler.capstone.productservice.ProductService.dtos.ProductUpdateRequestDTO;
 import com.scaler.capstone.productservice.ProductService.exceptions.ProductNotFoundException;
 import com.scaler.capstone.productservice.ProductService.models.Product;
 import com.scaler.capstone.productservice.ProductService.service.ProductService;
@@ -62,15 +63,21 @@ public class ProductController {
     }
 
 
-    @PatchMapping("product")
-    public ResponseEntity<ProductResponseDTO> partialUpdate(Long id, Product product) throws ProductNotFoundException {
-        Product product1=  productService.partialUpdate(id, product);
-        ProductResponseDTO productResponseDTO = new ProductResponseDTO(product1.getId(),
-                product1.getTitle(),
-                product1.getDescription(),
-                product1.getPrice(),
-                product1.getImageUrl(),
-                new CategoryDto(product1.getCategory().getName(), product1.getCategory().getDescription()));
+    @PatchMapping("product/{id}")
+    public ResponseEntity<ProductResponseDTO> partialUpdate(@PathVariable("id") Long id, @RequestBody ProductUpdateRequestDTO updateRequest) throws ProductNotFoundException {
+        Product product = new Product();
+        product.setTitle(updateRequest.getTitle());
+        product.setDescription(updateRequest.getDescription());
+        product.setPrice(updateRequest.getPrice());
+        product.setImageUrl(updateRequest.getImageUrl());
+        
+        Product updatedProduct = productService.partialUpdate(id, product, updateRequest.getCategoryName());
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO(updatedProduct.getId(),
+                updatedProduct.getTitle(),
+                updatedProduct.getDescription(),
+                updatedProduct.getPrice(),
+                updatedProduct.getImageUrl(),
+                new CategoryDto(updatedProduct.getCategory().getName(), updatedProduct.getCategory().getDescription()));
         return new ResponseEntity<>(productResponseDTO, HttpStatus.valueOf(201));
     }
 

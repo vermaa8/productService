@@ -26,11 +26,15 @@ public class FakeStoreProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Long id) throws ProductNotFoundException {
-        FakeStoreProductResponseDTO productResponseDTO=
+        FakeStoreProductResponseDTO productResponseDTO =
             restTemplate.getForObject("https://fakestoreapi.com/products/"+id,
                     FakeStoreProductResponseDTO.class );
+        
+        if (productResponseDTO == null) {
+            throw new ProductNotFoundException("Product with id " + id + " not found");
+        }
+        
         return FakeStoreProductResponseDTO.from(productResponseDTO);
-
     }
 
     @Override
@@ -83,6 +87,11 @@ public class FakeStoreProductServiceImpl implements ProductService {
 
         FakeStoreProductResponseDTO responseDto = responseEntity.getBody();
 
+        return null;
+    }
+
+    @Override
+    public Product partialUpdate(Long id, Product product, String categoryName) throws ProductNotFoundException {
         return null;
     }
 
