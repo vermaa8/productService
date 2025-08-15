@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService{
             throw new WrongPasswordException("Password is incorrect");
         }
         Token token = createToken(user);
-        tokenRepository.save(token);
-        return null;
+        return tokenRepository.save(token);
+
     }
 
     private Token createToken(User user) {
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public User validate(String token) {
-        Optional<Token> optionalToken = tokenRepository.findByValueAndDeletedAndExpiryAtGreaterThan(
+        Optional<Token> optionalToken = tokenRepository.findByValueAndIsDeletedAndExpiryAtGreaterThan(
                 token, false, new Date()
         );
         if (optionalToken.isEmpty()) {
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void logout(String tokenValue) {
         Optional<Token> optionalToken = tokenRepository
-                .findByValueAndDeleted(tokenValue, false);
+                .findByValueAndIsDeleted(tokenValue, false);
 
         if (optionalToken.isEmpty()) {
             throw new InvalidTokenException("Invalid token");

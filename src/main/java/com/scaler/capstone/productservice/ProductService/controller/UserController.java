@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public SignupResponseDto signup(SignupRequestDto signupRequestDto) {
+    public SignupResponseDto signup(@RequestBody SignupRequestDto signupRequestDto) {
 
             User user = userService.signUp(
                     signupRequestDto.getName(),
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
         Token token = userService.login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
         LoginResponseDto responseDto = new LoginResponseDto();
         responseDto.setToken(token);
